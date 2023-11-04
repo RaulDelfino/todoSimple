@@ -80,7 +80,7 @@ public class User {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -130,6 +130,8 @@ public class User {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         return result;
     }
+
+
 
 
 }
