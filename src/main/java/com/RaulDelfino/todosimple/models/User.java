@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -61,22 +62,18 @@ public class User {
     public User() {
     }
 
-    public User(long id, String username, String password) {
+    public User(Long id,String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
+    @JsonIgnore // quando buscar um usuario não precisa levar as tasks
     public List<Task> getTasks() {
         return this.tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-    
-
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -99,6 +96,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -120,6 +120,7 @@ public class User {
         return Objects.equals(this.id, other.id) && Objects.equals(this.username, other.username) 
             && Objects.equals(this.password, other.password);
     }
+
 
     
 
