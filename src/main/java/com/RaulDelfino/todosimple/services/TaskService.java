@@ -1,6 +1,7 @@
 package com.RaulDelfino.todosimple.services;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class TaskService {
             "Tarefa não encontrada id " + id + ", Tipo: " + Task.class.getName()
         ));
 
+     }
+
+     public List<Task> findAllByUserId(Long userId) {
+        List<Task> tasks = this.taskRepository.findByUser_id(userId);
+        return tasks;
      }
 
      @Transactional
