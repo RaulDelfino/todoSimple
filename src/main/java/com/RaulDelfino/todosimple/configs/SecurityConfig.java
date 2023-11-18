@@ -32,17 +32,13 @@ public class SecurityConfig {
 
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable());
 
-        http
-
-
-
-        .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                        .anyRequest().authenticated()
+        http.authorizeHttpRequests( (authorize) -> authorize
+        .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+        .requestMatchers(PUBLIC_MATCHERS).permitAll()
+        .anyRequest().authenticated()
         )
 
-                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 

@@ -1,7 +1,10 @@
 package com.RaulDelfino.todosimple.models;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,9 +20,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-
+import com.RaulDelfino.todosimple.models.enums.ProfileEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -67,6 +73,21 @@ public class User {
     @OneToMany(mappedBy ="user") // um usuario pode ter varias taks, e quem esta mapeando é a variavel user, la da Task model
         @JsonProperty(access =  Access.WRITE_ONLY) // quando buscar um usuario não vai retornar
     private List<Task> tasks  = new ArrayList<Task>();
+
+    //Set serve para não repetir na lista
+    @ElementCollection(fetch = FetchType.EAGER) // serpre que buscar o usuario do banco vai buscar os perfis junto
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)// nao retorna pro usuario o perfil dele
+    @CollectionTable(name = "user_profile") // Vira uma nova tabela para guadar o tipo do usuario
+    @Column(name = "profile" , nullable = false)
+    private Set<Integer> profiles = new HashSet<>();
+
+    public Set<ProfileEnum> getProfiles(){
+        return this.profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(ProfileEnum profile){
+        this.profiles.add(profile.getCode());
+    }
 
 
 }
